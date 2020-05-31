@@ -1,0 +1,180 @@
+# Python é uma linguagem interpretada - o que o faz rodar de forma mais lenta
+# do que um código de linguagem compilada como C++ ou Java.
+
+# DataFrame é orientado a colunas, estrutura de dados tabular, com labels
+# tanto para linhas quanto para colunas
+# Series -> objeto array UNIDIMENSIONAL com rótulo
+# Para dados numéricos, os arrays NumPy são mais eficientes para armazenar 
+# e manipular dados do que as outras estruturas de dados embutidas (built-in)
+# Além do mais, as bibliotecas escritas em uma linguagem de baixo nível, como
+# C ou Fortran, podem operar em dados armazenados em um arram NumPy sem 
+# copiar dados para outra representação em memória.
+
+# Pandas combina as ideias de processamento de alto desempenho de arrays da NumPy
+# com os recursos flexíveis de manipulação de dados das planilhas e dos
+# banco de dados relacionais (como o SQL). Ele disnponibiliza uma funcionalidade
+# sofisticada de indexação para facilitar a reformatação, a manipulação,
+# as agregações e a seleção de subconjunto de dados.
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy
+import sklearn
+import statsmodels as sm
+import seaborn as sns
+import timeit
+%clear
+
+# Lista b -> b.append, b. clear, b.copy, b.count, b.insert,
+# b.pop, b.remove, b.reverse, b.sort
+
+# Módulo datetime -->> datetime.date, datetime.datetime, datetime.datetime_CAPI
+# datetime.MAXYEAR, datetime.MINYEAR, datetime.time, datetime.timedelta,
+# datetime.timezone, datetime.tzinfo
+
+b = [1,2,3]
+b?
+%clear
+def add_numbers(a,b):
+    return a + b
+add_numbers?
+add_numbers??
+
+a = [1,2,3]
+b = a
+a
+b
+a.append(4)   
+a
+b 
+# OBSERVAR que em Python agora 'b = a' se referem ao mesmo objeto
+# e não somente b recebeu os valores [1,2,3]. A atribuição também é chamada
+# de vinculação (binding), pois estamos vinculando um nome a um objeto.
+# Quando passamos objetos como argumentos para uma função, novas variáveis
+# locais são criadas para referenciar os objetos originais, sem qualquer cópia.
+# Se você vincular um novo objeto a uma variável em uma função,
+# essa alteração não se refletirá no escopo-pai. ASsim é possível alterar
+# o conteúdo interno de um argumento mutável.
+
+# Objetos em Python geralmente têm tantos atributos (outros objetos Python
+# "armazenados" dentro do objeto) quando métodos (funções associadas a um objeto
+# que podem ter acesso a seus dados internos). Ambos são acessados 
+# por meio da sintaxe obj.nome_do_atributo
+
+# Atributos e métodos também podem ser acessados pelo nome usando a função
+# getattr
+
+##### DUCK TYPING: "Se anda como pato e faz quack como um pato, então é um pato"
+
+def isiterable(obj):
+    try:
+        iter(obj)
+        return True
+    except TypeError:
+        return False
+
+isiterable('a string')
+isiterable([1,2,3])
+isiterable(5)
+
+if not isintance(x,list) and isiterable(x):
+    x = list(x)
+
+a = [1,2,3]
+c = list(a) # list sempre cria uma nova lista Python (cópia)
+a is c
+a == c
+d = """this is a multiple
+string that spans
+multiple 
+lines"""
+print(d)
+d.count('\n')
+a = 'this is a string'
+a[10]
+for iter in a:
+    print(iter)
+for iter in enumerate(a):
+    print(iter)
+x = 5.6
+y = str(x)
+
+a = 'this is the first half'
+b = ' and this is the second half'
+print(a+b)
+a + b
+# Os objetos string têm um método FORMAT que pode ser usado para
+# substituir argumentos formatados na string, gerando uma nova string:
+
+template = '{0:.2f} {1:s} are worth US${2:d}'
+
+# {0:.2f} significa formatar o primeiro argumento como um número de ponto
+# flutuante com duas casas decimais
+# {1:s} significa formatar o segundo argumento como uma string
+# {2:d} significa formatar o terceiro argumento como um inteiro exato
+
+template.format(4.5560,'Argentine Pesos',1)
+
+# Converter string Unicode para sua representação em bytes UTF-8 usando
+# o método encode
+
+val = 'español'
+val
+val_utf8 = val.encode('utf-8')
+val_utf8
+type(val_utf8)
+val_utf8.decode('utf-8')
+val.encode('latin1')
+
+# Casting de tipos
+
+# Os tipos str, bool, int e float também são funções que podem ser usadas 
+# para cast de valores para esses tipos
+
+s = '3.14159'
+type(s)
+fval = float(s)
+fval
+type(fval)
+int(fval)
+bool(fval)
+bool(0)
+
+# None pode ser usado como valor default para argumento de função
+
+def add_and_maybe_multiply(a,b,c=None):
+    result= a+b
+    if c is not None:
+        result = result * c
+    return result
+add_and_maybe_multiply(3,5)
+add_and_maybe_multiply(3,5,3)
+
+### Datas e Horas
+
+# O módulo built-on DATETIME de Python disponiibliza os tipos 
+# datetime, date e time
+# O tipo datetime, como você pode imaginar, combina as informações armazenadas
+# em date e time e é o tipo mais comumente utilizado:
+
+from datetime import datetime, date, time
+dt = datetime(2011,10,29,20,30,21)
+dt.day
+dt.minute
+dt.hour
+dt.second
+dt.date()
+# Dada uma instância de datetime, você pode extrair os objetos date e time
+# equivalentes chamando os métodos no datetime
+
+dt.time()
+dt.strftime('%m/%d/%Y %H:%M')
+dt.strptime('20091031', '%Y%m%d')
+dt.replace(minute=0,second=0)
+dt2 = datetime(2011,11,15,22,30)
+delta = dt2 - dt
+delta
+type(delta)
+dt + delta
+
