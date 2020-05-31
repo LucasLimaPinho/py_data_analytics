@@ -178,3 +178,8 @@ delta
 type(delta)
 dt + delta
 
+string = 'Squeezing Data 4 a living'
+del seq
+for i in range(len(string)):
+    print(i)
+
