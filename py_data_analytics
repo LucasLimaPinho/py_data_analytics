@@ -641,3 +641,48 @@ arr3d[0] = 42
 arr3d
 arr3d[0] = old_values; arr3d
 
+# Indexando com fatias
+
+arr3d.shape
+arr3d[0]
+arr3d[1]
+arr3d[0].shape
+arr3d[1].shape
+arr3d[0,0,2]
+arr3d[0][0][2]
+old_values = arr3d[0].copy()
+arr3d[0] = 42
+arr3d
+arr3d[0] = old_values; arr3d
+arr3d[1,0]
+arr3d
+arr3d[0,:1,:2]
+
+# Indexação booleana
+
+# Assim como nas operações aritméticas, as comparações (como ==) com arrays também são vetorizadas. 
+
+names = np.array(['Bob','Joe','Will','Bob','Will','Joe','Joe'])
+names.shape
+data = np.random.randn(7,4); data.shape
+data
+names
+names == 'Bob'
+type(names=='Bob')
+data[names=='Bob'] # Devolve os índices em que names == 'Bob'
+# em ndarray do NumPy, os itens passados como argumentos se referem às linhas
+
+# O array booleano deve ter o mesmo tamanho do eixo do array que ele está indexado. Você pode até mesmo misturar e fazer a
+# correspondência entre arrays booleanos e fatias ou inteiros (ou sequência de inteiros)
+
+# em ndarray do NumPy, os itens passados como argumentos se referem às linhas
+data[names=='Bob',2:]
+data[names=='Bob',3]
+data[~(names=='Bob')] # índices em que data não é 'Bob'. No caso, 7 -2 =5
+data[~(names=='Bob')].shape
+cond = names == 'Bob'
+data[~cond]
+mask = (names=='Bob') | (names == 'Will')
+mask
+data[mask]
+# As palavras reservadas and e or de Python não funcionam com arrays booleanos. Utilize & (and) | (or) em seu lugar.
