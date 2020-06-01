@@ -686,3 +686,31 @@ mask = (names=='Bob') | (names == 'Will')
 mask
 data[mask]
 # As palavras reservadas and e or de Python não funcionam com arrays booleanos. Utilize & (and) | (or) em seu lugar.
+data[data<0] = 0; data
+data[names != 'Joe'] = 7; data
+
+# Indexação Sofisticada (fancy indexing)
+
+# Termo adotado pelo NumPy para descrever a indexação usando arrays de inteiros. Suponha que tivéssemos um array de 8x4.
+
+arr = np.empty((8,4))
+arr = np.empty((8,4))
+for i in range(8):
+    arr[i] = i
+arr
+arr[[4,3,0,6]]
+arr[[-3,-5,-7]] # Usar índices negativos seleciona as linhas a partir do final (a indexação começa em -1 e não em 0).
+
+# Passar vários índices de array faz algo um pouco diferente; a instrução seleciona um array unidimensional de elementos
+# correspondentes a cada tupla de índices:
+
+
+arr = np.arange(32).reshape((8,4))
+arr
+arr = np.arange(32).reshape((4,8)); arr
+arr = np.arange(32).reshape((8,4)); arr
+arr[[1,5,7,2], [0,3,1,2]] # Nesse caspo, os elementos (1,0), (5,3), (7,1), (2,2) foram selecionados. Independente
+# de quantas dimensoes o array tiver, o resultado da indexação sofisticada sempre será unidimensional.
+# A indexação sofisticada, de modo diferente do slicing, sempre copia os dados para um novo array
+
+arr[[1,5,7,2][:,[0,3,1,2]]
