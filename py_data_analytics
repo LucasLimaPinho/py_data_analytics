@@ -183,3 +183,171 @@ del seq
 for i in range(len(string)):
     print(i)
 
+# Tuplas: sequências imutáveis de tamanho fixo.
+tup = 4,5,6
+type(tup)
+tup
+nested_tup = (4,5,6), (7,8)
+nested_tup
+len(nested_tup)
+tup = tuple('string')
+len(tup)
+tup
+tup[0]
+# Não podemos alterar o valor das tuplas -> coleções imutáveis
+tup2 = tuple(['foo',[1,2],True])
+tup2[2] = False # Gera erro por ser uma coleção imutável
+# Se um objeto de uma tupla for mutável, por exemplo, uma lista, você
+# pode alterá-lo in place.
+tup2[1] # -> é a lista [1,2] que é uma coleção mutável.
+tup2[1].append(3)
+tup2
+#Concatenação de tuplas utilizando operador +
+# Multiplicar uma tupla por um inteiro, como ocorre com as listas,
+# tem o efeito de concatenar essa quantidade de cópias da tupla:
+tup3 = (4, None, 'foo') + (6,0) + ('bar',)
+tup3
+tup3*3
+('foo','bar')*4
+# DESEMPACOTANDO TUPLAS
+
+tup = (4,5,6)
+a,b,c, = tup
+a
+b
+c
+tup = 4,5,(6,7)
+a,b,(c,d) = tup
+d
+# usando desempacotamento para swap;
+
+values = 1,2,3,4,5
+a,b,*resto = values
+a,b
+resto
+# AS vezes por convenção utilizamos o underscore quando não usaremos o resto
+
+a,b,*_ = values
+a,b
+_
+b_list = list(values)
+b_list
+type(b_list)
+b_list[1] = 'peekaboo' # lista é mutável, agoro posso realizar alteração.
+b_list
+b_list.append('dwarf');b_list
+b_list.insert(1,'red');b_list
+b_list.insert(3,'posição3');b_list
+# insert é custosa do ponto de vista de processamento se comparada com append.
+# collections.deque pode ser melhor para inserir ou retirar elementos do começo
+# e fim de listas.
+
+b_list.pop(2)
+b_list
+b_list.append('foo');b_list
+b_list.remove('foo');b_list
+'dwarf' in b_list
+'dwarf' not in b_list
+# Verfificar se uma lista contém um valor é muito mais lendo do que fazer 
+# isso com dicionários e conjuntos, pois Python faz uma verificação linear
+# nos valores de lista, enquanto é capaz de verificar os outros tipos (com 
+#base em tabelas hash) em um tempo constante.
+
+b_list.extend(['banco','fintech','dot','instituto']);b_list
+# Usar .extend é preferível em relação a concatenar com operador +
+b_list[0] = str(b_list[0]);b_list[3] = str(b_list[3]); b_list[4] = str(b_list[4]); b_list[5] = str(b_list[5])
+
+b_list.sort(key=len);b_list
+import bisect
+# bisect implementa a busca binária e inserção em uma lista ordenada. 
+# bisect.bisect encontra o local em que um elemento deve ser inserido para manter a lista 
+# ordenada, enquanto bisect.insort insere o elemento nesse local.
+
+c = [1,2,2,2,3,4,7]
+bisect.bisect(c,2)
+bisect.bisect(c,5)
+bisect.insort(c,6)
+c
+# SLICING
+seq = [7,2,3,7,5,6,0,1]
+seq[1:5]
+seq[3:4] = [6,3]
+seq[:5]
+seq[3:]
+seq[-4:]
+seq[-6:-2]
+seq[::2]
+seq[::-1] # Inverte uma lista ou uma tupla!
+
+# ENUMERATE: querer manter o controle do índice do item atual quando iteramos
+# por uma sequência é comum. Enumerate devolve uma sequência de tuplas.
+
+alguma_lista = ['foo','bar','baz']
+mapping = {}
+for i,v in enumerate(alguma_lista):
+    mapping[v]=i
+mapping
+
+# ZIP pareia os elementos de uma série de listas, tuplas ou outras sequências para
+# criar uma lista de tuplas:
+
+seq1 = ['foo','bar','baz']; seq2 = ['one','two','three']
+zipped = zip(seq1,seq2)
+zipped
+list(zipped)
+# zip pode aceitar um número arbitrário de sequências, e o número de elementos que ele gera é 
+# determinado pela sequência mais curta.
+
+seq3 = [True,False]
+zipped = zip(seq1,seq2,seq3)
+list(zipped)
+
+for i,(a,b) in enumerate(zip(seq1,seq2)):
+    print('{0}: {1}, {2}'.format(i,a,b))
+
+
+# dict provavelmente é a estrutura de dados embutida mais importante de Python.
+# um nome mais comum para ele é hash map ou array associativo. 
+# consiste em uma coleção de pares de chave-valor (KVP) de tamanho flexível
+# em que chave e valor são objetos Python. Lidando com dicionário, argumento deve ser
+# tipicamente, a chave.
+empty_dict = {}
+d1 = {'a': 'some value', 'b': [1,2,3,4]}
+d1['b']
+d1['a']
+d1[7] = 'an integer'
+d1
+'b' in d1 # True
+b in d1 # False
+
+d1[5] = 'some value';d1
+d1['dummy'] = 'another value'; d1
+del d1[5]; d1
+ret = d1.pop('dummy'); ret # pop retorna o value e recebe a key para apagar.
+d1.keys()
+list(d1.keys())
+list(d1.values())
+d1.update({'b': 'foo', 'c': 12})
+d1
+
+# value = some_dict.get(key,default_value) -> by default, get vai devolver None se a chave não
+# estiver presente. some_dict.pop() irá lançar uma exceção caso a chave não esteja presente.
+
+words = ['apple','bat','bar','atom','book']
+by_letter = {}
+for word in words:
+    letter = word[0]
+    if letter not in by_letter:
+        by_letter[letter] = [word]
+    else:
+        by_letter[letter].append(word)
+
+# O método de dicionário setdefault serve exatamente para essa finalidade. 
+# o laço for anterior pode ser reescrito assim:
+
+for word in words:
+    letter = word[0]
+    by_letter.setdefault(letter,[]).append(word)
+
+%reset
+%clear
