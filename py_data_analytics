@@ -429,3 +429,35 @@ clean_strings(states)
  for letter, names in itertools.groupby(names,first_letter):
         print(letter,list(names)) # names é um gerador
    
+######## NUMPY: arrays e processamento vetorial.]
+# 1) ndarray: um array multidimensional eficaz que oferece operações aritméticas
+     #rápidas, orientadas a arrays, e recursos flexíveis de broadcasting
+# 2) funções matemáticas para operações rápidas de arrays de dados inteiros, 
+     # sem que seja necessário escrever laços
+# 3) ferramentas para ler/escrever dados de array em disco e trabalhar com 
+     # arquivos mapeados em memória
+# 4) recursos para álgebra linear, geração de números aleatórios e transformadas
+     # de Fourier
+# 5) uma API C para conectar o NumPy a bibliotecas escritas em C, C++ ou FORTRAN
+# esse recurso fez de Python uma linguagem preferida para encapsular bases de código
+# legadas em C/C++/FORTRAN, oferecendo-lhes uma interface dinâmica e fácil
+# broadcasting é um dos recursos mais avançados de Numerical Python (NumPy)     
+%reset
+%clear
+import numpy as np
+     # NumPy oferece operações rápidas em arrays vetorizados para tratamento 
+# e limpeza de dados, geração de subconjuntos e filtragem, transformações e
+# outros tipos de processamentos.]
+
+# algoritmos comuns para arrays como ordenação, 
+#unicidade e operações de conjunto
+
+# estatísticas descritivas eficazes e agregação/sintetização de dados;
+
+# alinhamento de dados e manipulações de dados relacionais
+# para combinar e juntar conjuntos de dados heterogêneos;
+
+# expressão de lógica condicionak na forma de expressões de array
+# em vez de laços com ramos if-else-elif]
+
+# manipulações de dados em grupos (agregação, transformação e aplicação de função)
