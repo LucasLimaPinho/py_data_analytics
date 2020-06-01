@@ -351,3 +351,81 @@ for word in words:
 
 %reset
 %clear
+# os OBJETOS HASHABLE são imutáveis. Portanto, listas que são mutáveis são unhashable. 
+hash('string) #OK porque string é imutável - hashable
+hash((1,2,(2,3))) #OK porque tupla é imutável - hashable
+hash((1,2,[2,3])) #NOK -> listas são mutáveis e, portanto, não hashable.
+
+# LIST COMPREHENSIONS (listcomps): permitem que você componha uma nova lista de nmodo conciso, filtrando os elementos de uma coleção,
+# transformando os elementos aos passar o filtro, com uma expressão concisa
+
+
+
+# forma padrão de listcomp ---> [expr for val in collection if condition]
+
+strings = ['a', 'as', 'bat', 'car', 'dove', 'python']
+listcomp = [x.upper() for x in strings if len(x) > 2]
+
+
+# dict_comp = {expr-chave : expr-valor for value in collection if condition}
+# set_comp = {expr for value in collection if condition}
+
+loc_mapping = {val : index for index, val in enumerate(strings)}
+loc_mapping
+
+# funções em python são objetos. Facilita remover espaços em branco, símbolos de pontuação, criar um padrão para ter um uso adequado de 
+# letras maiúsculas ou não no início das palavras. Uma forma de fazer isso é usar métodos embutidos de string, junto com o módulo re
+# da bibioleca-padrão para expressões regulares
+
+import re
+states = ['Alab?ama',
+          'Georgia!',
+          'georgia',
+          'FlOrida',
+          'south carolina####',
+          'West Virginia?']
+def clean_strings(strings):
+    result = []
+    for value in strings:
+        value = value.strip()
+        value = re.sub('[!#?]','',value)        
+        value = value.replace(" ","")
+        value = value.title()
+        result.append(value)
+    return result
+
+clean_strings(states)
+
+# FUNÇÕES ANÔNIMAS (lambdas): Python oferece suporte para funções anônimas ou lambdas - uma forma de escrever funções constituídas 
+# de uma única instrução, cujo resultado é o valor de retorno. Lambda significa "estamos declarando uma função anônima"
+# Em Data Science, há muitos casos em que funções de transformação de dados aceitarão funções como argumentos -
+# daí a necessidade de termos que usar funções lambdas. Geralmente exige-se menos digitação (e é mais claro) passar
+# uma função lambda, em oposição a escrever uma declaração de função completa ou até mesmo abrir a função lambda a uma variável local.
+
+ # CURRYING: aplicação parcial de argumentos derivando novas funções a partir de funções existentes.
+ 
+ def add_numbers(x,y):
+                return x + y
+ add_five = lambda y: add_numbers(5,y) # função de uma variável derivada da função existente -> currying.
+ # Dizemos que o segundo argumento de add_numbers sofreu currying.
+ 
+ from functools import partial
+ add_five = partial(add_numbers,5)
+ # EXPRESSÕES GERADORAS: feitas utilizando parênteses ao invés de colchetes na sintaxe de listcomps.
+ # Geradores e expressões geradores atuam de forma lazy e somente geram quando chamados.
+ # Expressões geradores podem ser usadas no lugar de listcomps como argumentos de função em muitos casos.
+ 
+ gen = (x ** 2 for x in range(100))
+ 
+ ## Módulo ITERTOOLS
+ 
+ # O módulo itertools da biblioteca-padrão tem uma coleção de geradores para muitos algoritmos comuns de dados.
+ # Por exemplo, groupby aceita qualquer sequência e uma função, agrupando elementos consecutivos da sequeência de acordo
+ # com o valor de retorno da função.
+ 
+ import itertools
+ first_letter = lambda x: x[0]
+ names = ['Alan', 'Adam', 'Wes', 'Will', 'Albert', 'Steven']
+ for letter, names in itertools.groupby(names,first_letter):
+        print(letter,list(names)) # names é um gerador
+   
