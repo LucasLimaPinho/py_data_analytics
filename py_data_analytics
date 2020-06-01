@@ -461,3 +461,183 @@ import numpy as np
 # em vez de laços com ramos if-else-elif]
 
 # manipulações de dados em grupos (agregação, transformação e aplicação de função)
+
+# pandas é mais utilizado em dados tabulares. O pandas também oferece algumas funcionalidades mais específicas de domínios,
+# como manipulação de séries temporais, que não estão presentes no NumPy.
+
+######## NUMPY: arrays e processamento vetorial.]
+# 1) ndarray: um array multidimensional eficaz que oferece operações aritméticas
+     #rápidas, orientadas a arrays, e recursos flexíveis de broadcasting
+# 2) funções matemáticas para operações rápidas de arrays de dados inteiros, 
+     # sem que seja necessário escrever laços
+# 3) ferramentas para ler/escrever dados de array em disco e trabalhar com 
+     # arquivos mapeados em memória
+# 4) recursos para álgebra linear, geração de números aleatórios e transformadas
+     # de Fourier
+# 5) uma API C para conectar o NumPy a bibliotecas escritas em C, C++ ou FORTRAN
+# esse recurso fez de Python uma linguagem preferida para encapsular bases de código
+# legadas em C/C++/FORTRAN, oferecendo-lhes uma interface dinâmica e fácil
+# broadcasting é um dos recursos mais avançados de Numerical Python (NumPy)     
+%reset
+%clear
+import numpy as np
+     # NumPy oferece operações rápidas em arrays vetorizados para tratamento 
+# e limpeza de dados, geração de subconjuntos e filtragem, transformações e
+# outros tipos de processamentos.]
+
+# algoritmos comuns para arrays como ordenação, 
+#unicidade e operações de conjunto
+
+# estatísticas descritivas eficazes e agregação/sintetização de dados;
+
+# alinhamento de dados e manipulações de dados relacionais
+# para combinar e juntar conjuntos de dados heterogêneos;
+
+# expressão de lógica condicionak na forma de expressões de array
+# em vez de laços com ramos if-else-elif]
+
+# manipulações de dados em grupos (agregação, transformação e aplicação de função)
+
+# Comparação de desempenho de um array NumPy com 10^6 milhão de inteiros
+# e uma lista equivalente em Python
+
+my_arr = np.arange(10**6)
+my_list = list(range(10**6))
+%time for _ in range (10): my_arr2 = my_arr*2 
+%time for _ in range (10): my_list2 = [x*2 for x in my_list]
+
+# Algoritmos baseados no NumPy geralmente são de 10 a 100 vezes mais rápidos (ou mais) do que suas contrapartidas em Python puro,
+# além de utilizarem significativamente menos memória.
+
+# NDARRAY no NumPy: um objeto array multidimensional
+
+# contêiner rápido e flexível para conjuntos de dados grandes em Python. Arrays permitem realizar operações matemáticas
+# em blocos inteiros de dados usando uma sintaxe semelhante às operações equivalentes entre elementos escalares.
+
+# um ndarray é um contêiner genérico multidimensional para dados homogêneos; isso significa que todos os elementos
+# DEVEM SER DO MESMO TIPO. Todo array tem um SHAPE, isto é, uma tipla que indica o tamanho de cada dimensão, e um
+# DTYPE, que é um objeto que descreve o tipo de dado do array.
+# SHAPE e DTYPE -> coisa de array; Para ter shape precisa ser multidimensional. Dict não tem shape.
+
+data.shape
+data.dtype
+
+my_arr = np.arange(10**6)
+my_list = list(range(10**6))
+%time for _ in range (10): my_arr2 = my_arr*2 
+%time for _ in range (10): my_list2 = [x*2 for x in my_list]   
+
+data = np.random.randn(2,3) # dados com distribuição normal. 2 linhas, 3 colunas
+data
+data *10
+data + data     
+data.shape
+data.dtype
+
+data1 = [6,7.5,8,0,1]
+arr1 = np.array(data1)
+arr1
+
+data2 = [[1,2,3,4],[5,6,7,8]] # vírgula separa a linha na formação do array
+len(data2)
+type(data2)
+arr2 = np.array(data2)
+type(arr2)
+len(arr2)
+arr2.size
+arr2.shape
+arr2.dtype
+arr2.ndim # importante para verificar quantidade de atributos em data science
+arr2
+np.zeros(10)
+np.ones(5)
+np.zeros((3,5))
+np.empty((2,3,2))
+np.eye(3)
+np.full(5,3)
+
+# Os dtyés são um dos motivos para a flexibilidade do NumPy em interagir com dados provenientes de outros sistemas. 
+# Na maioria dos casos, eles ofrecem um mapeamento direto para um disco subjacente ou uma representação em memória,
+# o que facilita ler e escrever streams de dados binários em disco e também se conectar com um código escrito
+# em linguagem de baixo nível como C ou Fortran. 
+
+# Cast np.array
+arr = np.array([1,2,3,4,5])
+arr.dtype
+float_arr = arr.astype(np.float64)
+float_arr.dtype
+float_arr
+
+
+arr = np.array([3.7, -1.2, -2.6, 0.5, 12.9, 10.1])
+arr
+int_arr = arr.astype(np.int32)
+int_arr
+# Se, por algum motivo, o casting falhar (como no caso de uma string que não possa ser convertida para float64),
+# um ValueError será gerado.
+# Chamar astype sempre cria um novo array (uma cópia de dados), mesmo que o novo dtype seja igual ao dtype antigo.
+# Aritméticas com arrays NumPy: permitem expressar operações em lote nos dados, sem escrever qualquer laço for.
+
+import numpy as np
+arr = np.array([[1.,2.,3.],
+               [4.,5.,6.]]); arr.dtype
+arr.shape
+arr
+arr * arr
+arr - arr
+1 / arr
+arr ** 0.5
+
+arr2 = np.array([[0.,4.,1.],
+                 [7.,2.,12.]]); arr2
+
+arr2 > arr
+
+# As operações entre arrays de tamanhos distintos são chamados de BROADCASTING.
+# Atribuir valor escalar a uma fatia, o valor será propagado (sofrerá broadcast a partir daí) para toda a seleção.
+# As fatias de arrays são VISUALIZAÇÕES do array original. Issto significa que os dados não são copiados e qualquer modificação
+# na visualização se refletirá no array original.
+
+arr = np.arange(10); arr
+arr[5]
+arr[5:8]
+arr[5:8] = 12; arr
+arr_slice = arr[5:8]; arr_slice
+arr_slice[1] = 12345; arr
+# Quando faço alterações nos valores de arr_slice, as mudanças se refletem no array arr original.
+arr_slice[:] = 64; arr
+# Poderíamos ter sérios problemas de desempenho e de memória se o NumPy insistisse em sempre copiar dados, uma vez que
+# iremos lidar com problemas de dados bem grandes.
+
+# Se você quiser uma cópia de uma fatira de um ndarray em vez de ter uma visualização, será necessároi copiar explicitamente o array -
+# por exemplo arr[5:8].copy()
+
+arr = np.arange(10); arr
+arr[5]
+arr[5:8]
+arr[5:8] = 12; arr
+arr_slice = arr[5:8]; arr_slice
+arr_slice[1] = 12345; arr
+arr_slice[:] = 64; arr
+
+arr2d = np.array([[1,2,3],
+                  [4,5,6],
+                  [7,8,9]]); arr2d[2]
+arr2d[0,2]
+
+arr3d = np.array([[[1,2,3],
+                  [4,5,6]],
+                  [[7,8,9],
+                  [10,11,12]]]); arr3d
+arr3d.shape
+arr3d[0]
+arr3d[1]
+arr3d[0].shape
+arr3d[1].shape
+arr3d[0,0,2]
+arr3d[0][0][2]
+old_values = arr3d[0].copy()
+arr3d[0] = 42
+arr3d
+arr3d[0] = old_values; arr3d
+
