@@ -811,3 +811,23 @@ bools = np.array([False,False,True,False])
 bools.any()
 bools.all()
 
+# Podemos ordenar cada seção unidimensional de valores em um array
+# multidimensional in place ao longo de um eixo passando o número desse eixo para sort
+
+arr = np.random.randn(5,3)
+arr
+arr.sort(1)
+arr
+# NP.UNIQUE
+
+names = np.array(['Bob','Joe','Will','Bob','Will','Joe','Joe'])
+np.unique(names)
+ints = np.array([3,3,3,2,2,1,1,4,4])
+np.unique(ints)
+
+# np.in1d -> testa a pertinência dos valores de um array em outro devolvendo 
+# um array booleano
+
+values = np.array([6,00,3,2,5,6])
+np.in1d(values,[2,3,6])
+
