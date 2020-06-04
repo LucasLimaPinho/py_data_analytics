@@ -714,3 +714,100 @@ arr[[1,5,7,2], [0,3,1,2]] # Nesse caspo, os elementos (1,0), (5,3), (7,1), (2,2)
 # A indexação sofisticada, de modo diferente do slicing, sempre copia os dados para um novo array
 
 arr[[1,5,7,2][:,[0,3,1,2]]
+
+# Transposição de arrays e troca de eixos.
+
+# A transposição devolve uma visualização dos dados subjacentes, sem copiar nada. Os arrays possuem o método transpose.
+
+arr = np.array([[0,1,2,3,4],
+       [5,6,7,8,9],
+       [10,11,12,13,14]])
+arr.T
+arr.T.shape
+arr = np.random.randn(6,3)
+np.dot(arr.T,arr)
+
+# np.dot é o PRODUTO INTERNO (INNER PRODUCT)
+
+arr = np.arange(16).reshape(2,2,4)
+arr
+arr.transpose(1,0,2)
+arr
+arr.swapaxes(1,2)
+
+arr = np.random.randn(7)*5
+remainder , whole_part = np.modf(arr)
+remainder
+whole_part
+
+# UFUNCs permitem utilizar argumento opcional out que lhes permite atuar in-place nos arrays.
+
+# Pg.146 traz uma lista de ufuncs aplicadas a arrays como abs, fabs, sqrt, square, exp, log, log10, log2
+# log1p, sign, floor, ceil, rint, modf, isnan, isfinite, isinf, cos, sin, cosh, sinh, tan, tanh,
+
+# arccos, arccosh, arcsin, arcsinh, arctan, arctanh,
+#logical_not
+
+# Programação Orientada a arrays: evitar escrita de laços; concise expressions;
+# a prática de substituição de laços explícitos por expressões de arrays é chamada de vetorização (vectorization).
+# é mais rápido de uma a duas ordens de grandeza que os equivalentes em Python puro.
+
+points = np.arange(-5,5,0.01) # 1000 pontos igualmente espaçados
+xs, ys = np.meshgrid(points,points)
+ys
+xs
+
+import matplotlib.pyplot as plt
+z = np.sqrt(xs**2 + ys **2)
+plt.imshow(z,cmap=plt.cm.gray);plt.colorbar()
+plt.title("Image plot of $\sqrt {x^2 + y^2}$ for a grid of values")
+
+# numpy.where é uma função ternária - versão vetorizada x if condition else y. 
+
+xarr = np.array([1.1,1.2,1.3,1.4,1.5])
+yarr = np.array([2.1,2.2,2.3,2.4,2.5])
+cond = np.array([True,False,True,True,False])
+
+# Versão com laço explícito x if conditio else y
+
+result = [(x if c else y) for x,y,c in zip(xarr,yarr,cond)]
+result
+
+# Versão vetorizada com função ternária numpy.where
+
+result = np.where(cond, xarr, yarr)
+result
+# O segundo e o terceiro argumento de np.where não precisam necessariamente 
+# ser arrays; um deles, ou ambos, podem ser escalares.
+
+# O segundo e o terceiro argumento de np.where não precisam necessariamente 
+# ser arrays; um deles, ou ambos, podem ser escalares. Um uso típico de where em análise de dados
+# é aquele em que geramos um novo array de valores com base em outro array.
+# Suponha que você tenha uma matriz de dados gerados aleatoriamente e quisesse
+# substituir todos os valores positivos por 2 e todos os negativos por -2.
+# Fica fácil utilizando numpy.where.
+
+arr = np.random.randn(4,4)
+np.where(arr >0,2,-2)
+
+arr = np.random.randn(5,4)
+arr
+arr.mean()
+np.mean(arr)
+arr.sum()
+arr.mean(axis=1)
+arr.sum(axis=0)
+arr = no.array([0,1,2,3,4,5,6,7])
+arr.cumsum()
+
+arr = np.random.randn(100)
+(arr>0).sum() # numero de valores positivos (deve ser próximo de 50)
+
+# Há dois métodos adicionais, any e all, particularmente úteis para arrays booleanos.
+# any testa se um ou mais valores em um array são True, enquanto all verifica
+# se todos os valores são True.
+
+bools = np.array([False,False,True,False])
+bools.any()
+bools.all()
+
