@@ -831,3 +831,112 @@ np.unique(ints)
 values = np.array([6,00,3,2,5,6])
 np.in1d(values,[2,3,6])
 
+# De modo diferente de algumas linguagens como MATLAB, multiplicar dois arrays bidimensionaus com *
+# corresponde ao produto de todos os elementos e não a um produto escalar de matrizes. Desse modo, há uma função
+# dot, que é tanto um método de array quanto uma função no namespace numpy para multiplicação de matrizes:
+
+
+x = np.array([[1.,2.,3.], [4.,5.,6.]])
+y = np.array([[6.,23.], [-1,7],[8,9]])
+x
+y
+x.dot(y)
+np.dot(x,y)
+
+# Um produto de matrizes entre um array bidimensional e um array unidimensional de tamanho apropriado resulta em um array unidimensional:
+
+np.dot(x,np.ones(3))
+
+# O símbolo @ (conforme usado em Python 3.5) também funciona como operador infixo que efetua multiplicação de matrizes:
+
+x @ np.ones(3)
+
+# numpy.linalg tem um conjunto padrão de decomposições de matrizes além de operações como inverso e determinante. Elas estão implementadas
+# internamente por meio das mesmas bibloptecas de álgebra linear que são padrões de mercado em outras linguagens como R e MATLAB.
+# BLAS, LAPACK.
+
+from numpy.linalg import inv, qr
+
+X = np.random.randn(5,5)
+mat = X.T.dot(X)
+inv(mat)
+mat.dot((inv(mat)))
+q, r = qr(mat)
+
+# PG. 159 ------> Funções de LINALG utilizadas e posteriormente um pouco sobre random walks
+
+
+############# INTRODUCAO AO PANDAS
+
+import pandas as pd
+from pandas import Series, DataFrame
+
+# A principal diferença para o NumPy é que o Pandas foi pensado para trabalhar com dados tabulares e heterogêneos.
+# O NumPy, em comparação, é mais apropriado para trabalhar com dados numéricos homogêneos em arrays
+
+# Duas estruturas de dados são a força de trabalho do Pandas: Series e DataFrame
+
+# SERIES: array unidimensional contendo uma sequência de valores (de tipos semelhantes aos tipos de NumPy)
+# e um array associado de rótulos (labels) chamado de índice. A Series mais simples é composta de
+# apenas um array de dados:
+
+obj = pd.Series([4,7,-5,3])
+
+# Com frequência será desejável criar uma Series com um índice que identifique cada ponto de dado com um rótulo:
+
+obj2 = pd.Series([4,7,-5,3], index = ['d', 'b','a','c'])
+obj2
+obj2.values
+obj2.index
+obj2['a']
+obj2['d'] = 6
+obj2[['c','a','d']]
+obj2[obj2>0]
+obj2*2
+np.exp(obj2)
+# Podemos pensar Series como um dicionário ordenado de tamanho fixo como se fosse um mapeamento entre valores de índices
+# e valores de dados. Ela pode ser utilizada em muitos contextos em que um dicionário poderia ser usado:
+
+'b' in obj2
+'e' in obj2
+# Se você tiver dados contidos em um dicionário Python, uma Series poderá ser Criada a partir dele, passando-lhe o dicionário:
+
+sdata = {'Ohio': 35000, 'Texas': 71000, 'Oregon': 16000, 'Utah': 5000}
+obj3 = pd.Series(sdata)
+type(sdata)
+type(obj3)
+obj3
+
+# É possível mudar as ordens dos índices passando o argumento index. California irá receber NaN pois não tem key no dicionário
+
+states = ['California', 'Ohio', 'Oregon', 'Texas']
+obj4 = pd.Series(sdata, index = states)
+pd.isnull(obj4)
+
+obj3 + obj4 # Semelhante ao join -> recurso de alinhamento de dados
+
+### DATAFRAME: representa uma tabela de dados retangular e contém uma coleção ordenada de colunas, em que cada uma pode ter 
+# um tipo de valor diferente (numérico, string, booleano, etc.). O dataframe tem índice tanto para linha quanto para coluna;
+# pode ser imaginado como um dicionário de Series, todos compartilhando o mesmo índice
+
+
+# Internamente, os dados são armazenados como um ou mais blocos bidimensionais em vez de serem armazenados como uma lista,
+# um dicionário ou outra coleção de arrays unidimensionaus. Indexação hierárquica é um dos tópicos mais quentes em DataFrame
+# e permite que vá além da representação de array bidimensional.
+
+data = {'state' : ['Ohio', 'Ohio', 'Ohio', 'Nevada', 'Nevada', 'Nevada'],
+        'year' : [2000,2001,2002,2001,2002,2003],
+        'pop': [1.5,1.7,3.6,2.4,2.9,3.2]}
+frame = pd.DataFrame(data)
+
+type(frame)
+frame
+pd.DataFrame(data,columns=['year','state','pop'])
+frame.head()
+frame2 = pd.DataFrame(data,
+                      columns = ['year','state','pop','debt'],
+                      index = ['one','two','three','four','five','six'])
+frame2['state']
+type(frame2['state']) # uma coluna de um dataframe é um Series.
+
+
