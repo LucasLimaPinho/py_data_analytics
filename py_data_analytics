@@ -1000,3 +1000,136 @@ returns.MSFT.corr(returns.IBM)
 returns.corr() # matri completa de correlação 
 returns.cov() # matri completa de covariância
 returns.corrwith(returns.IBM)
+
+# Entrada e Saída de Dados usando Pandas.
+# A entrada e saída de dados geralmente se enquadram em algumas categorias principais: a leitura de arquivos-texto e outros
+# formatos mais eficientes em disco, carga de dados de banco de dados e interação com fontes de dados da rede, como APIS web
+
+# 6.1 - Lendo e escrevendo dados em formato - texto (pg. 218)
+
+# read_csv, read_table, read_fwf_ read_clipboard_ read_excel, read_hdf, read_html, read_json
+# read_msgpack, read_picle, read_sas, read_sql, read_stata, read_feather
+
+# Converter DADOS DE TEXTO EM UM DATA FRAME
+# Parsing de data e hora: inclui recursos de combinação, entre eles, combinação de informações de data e hora
+# espalahadas em várias colunas ou em uma única coluna resultado
+# Iteração: suport para iteração em partes de arquivos bem grandes
+# Problemas com dados sujos: pular linhas ou um rodapé, comentários ou outras pequenas informações como dados numéricos com vírgulas
+# para separar milhares
+
+# READ_CSV TEM MAIS DE 50 PARÂMETROS
+# algumas funções fazem inferência de tipos, pois os tipos de dados das colunas não fazem parte do formato.
+# Isso significa que você não precisa necessariamente especificar quais colunas são numéricas, inteiras, booleanadas ou string.
+# Outro formatos de dados, como HDF5, Feather e msgpack, têm os tipos de dados armazenados no formato.
+
+os.getcwd() # Devolve diretório atual
+os.chdir("C:/Users/lucas/OneDrive/Documentos") # Change diretório
+os.getcwd()
+os.listdir() # Lista arquivos do diretório atual
+df = pd.read_csv('ex1.txt')
+df
+df2 = pd.read_table('ex1.txt', sep=','); df2
+
+df3 = pd.read_csv('ex1.txt', header = None); df3
+df4 = pd.read_csv('ex1.txt', names = ['a','b','c','d','message']);df4
+names = ['a','b','c','d','message']
+df5 = pd.read_csv('ex1.txt',names=names,index_col = 'message');df5
+
+parsed = pd.read_csv('csv_mindex.txt',
+                     index_col = ['key1','key2'])
+parsed
+
+# QUANTIDADE VARIÀVEL DE ESPAÇOS EM BRANCO COMO DELIMITADOR ->>>> pd.read_table com sep = '\s+'
+pd.options.display.max_rows = 10
+# nrows como argumento de pd.read_csv ajuda a delimitar a quantidade de linhas a serem lidas do arquivo.
+# Para ler um arquivo em partes, especifique uma quantidade de linhas para chuncksize
+# o objeto TEXTPARSER devolvido por read_csv permite iterar pelas partes do arqujivo de acordo com o chucksize.
+
+# Escrevendo dados em formato-texto (pg.228)
+
+df5.to_csv('out.txt')
+
+# XML e HTML: web scrapping 
+
+# pip install lxml
+# pip install beatifulsoup4 html5lib
+import lxml
+import lxml
+import beatifulsoup4
+import html5lib
+
+# FORMATO DE DADOS BINÁRIOS ------> Serialização (pickle)
+
+# Uma das formas mais simples de armazenar dados de modo eficiente em formato binário é usando a serialização embutida
+#  pickle de python. Todos os objetos do pandas têm um método TO_PICKLE que escreve os dados em disco em formato pickle.
+
+frame = pd.read_csv('ex1.csv')
+frame = pd.read_csv('ex1.txt')
+frame
+frame.to_pickle('frame_pickle')
+pd.read_pickle('frame_pickle')
+
+# pickle é recomendado apenas como um formato de armazenagem de curta duração. O problema está no fato de ser difícil de garantir
+# que o formato permanecerá estável com o passar do tempo; um objeto serializado com pickle poderá não ser desserializado com uma
+# versão mais recente de uma biblioteca. Talvez precisemos romper com o picle em algum momento.
+
+# O pandas tem suporte incluído para outros dois formatros de dados binários: HDF5 e MessagePack. 
+# HDF5 é um formato de arqquivo bem visto cujo propósito é armazenar grandes quantidades de dados científicos em arrays.
+
+# Interagindo com Banco de Dados.
+
+# Carregar dados de SQL para um DataFrame é razoavelmente simples, e o pandas tem algumas funções para simplificar o processo.
+# Como exemplo, um bando de dados SQLite usando o driver embutido sqlite3 do Python:
+
+import sqlite3
+query = """CREATE TABLE test (a VARCHAR(20), b VARCHAR(20), c REAL, d INTEGER);"""
+con = sqlite3.connect('mydata.sqlite')
+con.execute(query)
+data = [('Atlanta','Georgia',1.25,6),
+        ('Tallahassee','Florida',2.6,3),
+        ('Sacramento','California',1.7,5)]
+stmt = "INSERT INTO test VALUES (?,?,?,?)"
+con.executemany(stmt,data)
+con.commit()
+cursor = con.execute('select * from test')
+rows = cursor.fetchall()
+rows
+cursor.description
+pd.DataFrame(rows, columns = [x[0] for x in cursor.description])
+
+import sqlalchemy as sqla
+db = sqla.create_engine('sqlite:///mydata.sqlite')
+pd.read_sql('select * from test', db)
+
+##########################################################################################
+
+
+# 7. Limpeza e Preparação dos Dados
+
+# Durante a análise e modelagem dos dados, um período significativo de tempo é gasto em sua preparação: carga, limpeza, transformação
+# e reorganização.  Sabe-se que essas tarefas em geral ocupam 80% ou mais do tempo de um analista. às vezes, o modo como os dados
+# são armazenados em arquivos ou em bancos de dados não constituem o formato correto para uma tarefa particular. 
+
+# DADOS AUSENTES, DADOS DUPLICADOS, MANIPULACAO DE STRINGS E OUTRAS TRANSFORMACOES DE DADOS
+
+# 7.1 Tratando dados ausentes.
+
+# todas as estatísticas descritivas do pandas excluem automaticamente dados ausentes. 
+# df.dropna(axis=1,how='all') só dropa se todos forem igual NaN na coluna
+# df.dropna(thresh=2) limita a dropar somente quando NaN for igual a 2 na linha
+# Preenchendo dados ausentes ----> df.fillna(0)
+# df.fillna({1:0.5,2:0})
+# alteração in_place ---> _ = df.fillna(0, inplace = True)
+
+
+
+
+
+
+
+
+
+
+
+
+
