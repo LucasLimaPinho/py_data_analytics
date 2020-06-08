@@ -1365,6 +1365,52 @@ frame2
 frame2 = frame.set_index(['c','d'], drop = False)
 frame2
 
+# pandas.merge: conecta linhas em DataFrames com base em uma ou mais chaves. Essa operação será conhecida pelos usuários de 
+# SQL e outros bancos de dados relacionais, pois ela implementa as operações de junção (join) dos bancos de dados.
+# pandas.concat -> concatena ou " empilha " objetos ao longo de um eixo.
+# O método de instância combine_first permite combinar dados que se sobrepõem a fim de preencher valores ausentes em um objeto
+# com valores de outro objeto
+
+arr = np.arange(12).reshape(3,4)
+stack_columns = np.concatenate([arr, arr],axis=1)
+stack_rows = np.concatenate([arr, arr],axis=0)
+
+s1 = pd.Series([0,1], index = ['a','b'])
+s2 = pd.Series([2,3,4], index = ['c','d','e'])
+s3 = pd.Series([5,6],index=['f','g'])
+pd.concat([s1,s2,s3])
+
+# Por padrão, pd.concat atua em axis = 0. Gerando outra pd.Series. 
+
+
+arr = np.arange(12).reshape(3,4); arr
+stack_columns = np.concatenate([arr, arr],axis=1)
+stack_rows = np.concatenate([arr, arr],axis=0)
+s1 = pd.Series([0,1], index = ['a','b'])
+s2 = pd.Series([2,3,4], index = ['c','d','e'])
+s3 = pd.Series([5,6],index=['f','g'])
+pd.concat([s1,s2,s3]) # Gera outra series
+pd.concat([s1,s2,s3], axis = 1) # Gera um dataframe
+
+s4 = pd.concat([s1,s3])
+pd.concat([s1,s4], axis=1)
+pd.concat([s1,s4], axis =1, join='inner')
+
+# REFORMATACAO E PIVOTEAMENTO
+
+# Reformatação com indexação hierárquica. A indexação hierárquica oferece uma forma consistente de reorganizar os dados
+# em um DataFrame. Há duas ações principais
+##################### STACK --> faz a "rotação" ou o pivoteamento das colunas dos dados para as linhas
+##################### UNSTACK --> faz o pivoteamento das linhas para as colunas
+
+data = pd.DataFrame(np.arange(6).reshape((2,3)),
+                    index = pd.Index(['Ohio','Colorado'], name = 'state'),
+                    columns = pd.Index(['one','two','three'],name = 'number'))
+result = data.stack()
+result # faz o pivoteamento das colunas para as linhas
+result.unstack()
+result.unstack(0)
+result.unstack('state')
 
 
 
