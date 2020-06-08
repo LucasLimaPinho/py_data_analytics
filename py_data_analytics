@@ -1323,6 +1323,48 @@ pd.merge(df1,df2,how='outer')
 pd.merge(df1,df2,how='left')
 pd.merge(df1,df2,how='right')
 
+# REGORGANIZANDO E ORDENANDO NÍVEIS: Ocasionalmente precisaremos reorganizar a ordem dos níveis em um eixo
+# ou ordenar os dados de acordo com os valores em um nível específico. swaplevel aceita dois números
+# ou nomes de níveis e devolve um novo objeto com níveis trocados.
+import pandas as pd
+import numpy as np
+frame = pd.DataFrame(np.arange(12).reshape(4,3),
+                     index = [['a','a','b','b'],[1,2,1,2]],
+                     columns = [['Ohio','Ohio','Colorado'],['Green','Red','Green']])
+frame.index.names = ['key1','key2']
+frame.columns.names = ['state','color']
+frame
+
+#  Tome cuidado para distinguir os nomes dos índices 'state' e 'color' dos rótulos das linhas.
+# Com uma indexação parcial de colunas, você poderá, de modo semelhante, selecionar grupos de colunas:
+
+frame['Ohio']
+frame.swaplevel('key1','key2')
+
+# sort_index ordena os dados usando os valores de um só nível. 
+
+# ESTATÌSTICAS DE RESUMO POR NÍVEL: muitas estatísticas descriticas ou de resumo em DataFrame e em Series têm uma opção level;
+# com ela, podemos especificar o nível de acordo com o qual queremos fazer uma agregação, em um eixo em particular.
+# Considere o DataFrame anterior; podemos fazer uma agregação por nível, seja nas linhas ou nas colunas, da seguinte maneira>
+frame.sum(level='key2')
+frame.sum(level='color',axis=1)
+frame
+
+# INDEXANDO COM AS COLUNAS DE UM DATAFRAME: não é incomum querer usar ou uma mais colunas de um DataFrame como índice de linha;
+# de modo alternativo, talvez você queira mover o índice das linhas para as colunas do DataFrame.
+
+frame = pd.DataFrame({'a':range(7),
+                      'b':range(7,0,-1),
+                      'c':['one','one','one','two','two','two','two'],
+                      'd':[0,1,2,0,1,2,3]})
+                      
+# a função set_index de DataFrame criará um novo DataFrame usando uma ou mais de suas colunas como índice
+ 
+frame2 = frame.set_index(['c','d'])
+frame2
+frame2 = frame.set_index(['c','d'], drop = False)
+frame2
+
 
 
 
