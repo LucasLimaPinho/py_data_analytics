@@ -1414,8 +1414,71 @@ result.unstack('state')
 
 # CAPITULO 10 - Agregação de Dados e Operações em Grupos
 
+# Classificar um conjunto de dados e aplicar uma função a cada grupo, seja uma agregação ou uma transformação,
+# com frequência é um componente essencial em um fluxo de trabalho de análise de dados. Após carregar, mesclar e preparar
+# um conjunto de dados, talvez seja necessário calcular estatísticas de grupos ou, possivelmente, tabelas pivôs visando a 
+# relatórios e visualizações. O pandas oferece uma interface flexível groupby, que permite manipular e resumir conjuntos
+# de dados de forma natural.
+
+##################### Separar um objeto do pandas em partes usando uma ou mais chaves (na forma de funções, arrays ou nomes de colunas de um DF
+
+##################### calcular estatísticas de resumo para grupos, como contador, média ou desvio-padrão, ou aplicar função definida pelo usuário
+
+##################### aplicar transformações em grupo ou fazer outras manipulações como normalização, regressão linear, classificação ou seleção de subconjuntos
+
+##################### calcular tabelas pivôs e tabulações cruzadas
+
+##################### fazer análises de quantis e outras análises estatítsticas de grupos
 
 
+# 10.1 Funcionamento de Groupby
 
 
+df = pd.DataFrame({'key1' : ['a','a','b','b','a'],
+                  'key2' : ['one','two','one','two','one'],
+                  'data1': np.random.randn(5),
+                  'data2': np.random.randn(5)})
 
+grouped = df['data1'].groupby(df['key1'])
+grouped.mean()
+means = df['data1'].groupby([df['key1'], df['key2']]).mean()
+means
+means.unstack()
+
+df.groupby('key1').mean()
+df.groupby(['key1','key2']).mean()
+
+# O objeto GroupBy aceita iteração, gerando uma sequência de tuplas de 2 contendo
+# o nome do grupo, junto com a porção de dados. 
+
+for name, group in df.groupby('key1'):
+    print(name)
+    print(group)
+
+for (k1,k2),group in df.groupby(['key1','key2']):
+    print((k1,k2))
+    print(group)
+    
+# Por padrão, groupby agrupa em axis = 0, mas podemos agrupar em qualquer um dos outros eixos.
+
+# Selecionando uma coluna ou um subconjunto de colunas
+
+# Indexar um objeto GroupBy criado a partir de um DataFrame com um nome de coluna ou um array de nomes de coluna tem o efeito de criar 
+# subconjuntos de colunas para agregação. Isso significa que:
+
+people = pd.DataFrame(np.random.randn(5,5),
+                      columns = ['a','b','c','d','e'],
+                      index = ['Joe','Steve','Wes','Jim','Travis'])
+
+people.iloc[2:3,[1,2]] = np.nan
+mapping = {'a': 'red',
+           'b': 'red',
+           'c': 'blue',
+           'd': 'blue',
+           'e': 'red',
+           'f': 'orange'}
+by_column = people.groupby(mapping, axis=1)
+by_column.sum()
+map_series = pd.Series(mapping)
+map_series
+people.groupby(map_series,axis=1).count()
