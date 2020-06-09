@@ -1482,3 +1482,107 @@ by_column.sum()
 map_series = pd.Series(mapping)
 map_series
 people.groupby(map_series,axis=1).count()
+
+# AGRUPANDO COM FUNÇÔES
+
+# Usar funções Python é uma forma mais genérica de definir um mapeamento de grupos, em comparação com um dicionário ou uma Series.
+# Qualquer função passada como uma chave de grupo será chamada uma vez por valor de índice, com os valores de retorno usados
+# como os nomes dos grupos.
+
+people.groupby(len).sum()
+key_list = ['one','one','one','two','two']
+people.groupby([len, key_list]).min()
+columns = pd.MultiIndex.from_arrays([['US','US','US','JP','JP'],
+                                     [1,3,5,1,3]],
+                                    names = ['cty','tenor'])
+hier_df = pd.DataFrame(np.random.randn(4,5), columns = columns)
+hier_df
+hier_df.groupby(level='cty',axis=1).count()
+
+# MÈTODO APPLY: separar-aplicar-combinar genérico: o método de propósito mais geral de GroupBy é apply.
+# apply serpara o objeto sendo manipulado em partes, chama a função recebida em parte e, em seguida, tenta concatená-las.
+# apply só precisar devolver um objeto do pandas ou valor escalar. O que ocorre dentro da função passada para esse método é 
+# de sua responsabilidade.
+
+# Exemplo: preenchendo valores ausentes com valores específicos de grupo.
+# Ao limpar dados ausentes, em alguns casos, você substituirá os dados observados por dropna, porém, em outros, talvez você 
+# queira representar os valores nulos (NA), isto é, preenchê-los, com um valor fixo ou outro valor derivado de dados. 
+# fillna é a ferramenta correta a ser usada;
+
+s = pd.Series(np.random.randn(6))
+s[::2] = np.nan
+s.fillna(s.mean())
+
+# Suponha que seja necessário que o valor de preenchimento varie conforme
+# o grupo. Um modo de fazer isso é agrupar os dados e usar apply com uma função
+# que chame fillna em cada porção de dados. 
+
+states = ['Ohio','New York', 'Vermont', 'Florida', 'Oregon', 'Nevada',
+          'California', 'Idaho']
+
+group_key = ['East'] * 4 + ['West']*4
+data = pd.Series(np.random.randn(8), index=states)
+data
+data[['Vermont','Nevada','Idaho']] = np.nan; data
+data.groupby(group_key).mean()
+fill_mean = lambda g: g.fillna(g.mean())
+data.groupby(group_key).apply(fill_mean)
+
+fill_values = {'East' : 0.5, 'West': -1}
+fill_func = lambda g: g.fillna(fill_values[g.name])
+data.groupby(group_key).apply(fill_func)
+
+# EXEMPLO: amostragem aleatória e permutação
+
+# Suponha que quiséssemos sortear uma amostra aleatória (com ou sem substituição)
+# a partir de um conjunto de dados grande, visando a uma simulação de Monte Carlo
+# ou outra aplicação.
+
+suits = ['H','S','C','D']
+card_val = (list(range(1,11)) + [10]*3)*4
+base_names = ['A'] + list(range(2,11)) + ['J','K','Q']
+cards = []
+for suit in ['H','S','C','D']:
+    cards.extend(str(num) + suit for num in base_names)
+deck = pd.Series(card_val, index=cards)
+
+def draw(deck, n=5):
+    return deck.sample(n)
+
+draw(deck)
+# Suponha que quiséssemos duas cartas aleatórias de cada naipe. Como o naipe é o último
+# caractere do nome de cada carta, podemos fazer agrupamentos com base nisso e usar apply:
+
+get_suit = lambda card: card[-1]
+deck.groupby(get_suit).apply(draw,n=2)
+
+# de modo alternativo, poderíamos escrever:
+
+deck.groupby(get_suit, group_keys=False).apply(draw, n=2)
+
+# EXEMPLO: média ponderada de grupos e correlação
+
+# No paradigma separar-aplicar-combinar (split-array-combine) de groupby, operações entre clunas em um DataFrame ou em duas Series,
+# como uma média ponderada de grupos, são possíveis. 
+
+df = pd.DataFrame({'category': ['a','a','a','a',
+                                'b','b','b','b'],
+                   'data' : np.random.randn(8),
+                   'weights': np.random.randn(8)})
+
+df
+grouped = df.groupby('category')
+get_wavg = lambda g: np.average(g['data'], weights=g['weights'])
+grouped.apply(get_wavg)
+
+
+
+
+
+
+
+
+
+
+
+
