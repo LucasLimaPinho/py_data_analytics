@@ -1575,6 +1575,19 @@ grouped = df.groupby('category')
 get_wavg = lambda g: np.average(g['data'], weights=g['weights'])
 grouped.apply(get_wavg)
 
+# 10.4 - TABELAS PIVÔS e TABULAÇÃO CRUZADA
+
+# Uma tabela PIVÔ é uma ferramenta de SINTETIZAÇÃO DE DADOS frequentemente encontrada
+# em programas de planilhas e em outros softwares de análise de dados. 
+# Ela agrega uma tabela de dados de acordo com uma ou mais chaves, organizando os dados
+# em um retângulo com algumas das chaves dos grupos nas linhas e outras nas colunas.
+# As tabelas pivô em Python com pandas são possíveis por meio do recurso groupby,
+# em conjunto com operações de reformatação que utilizam indexação hierárquica. 
+# O DataFrame tem um método pivot_table e há também uma função pandas.pivot_tabçe de nível superior
+
+# Além de oferecer uma interface conveniente para groupby, pivot_table pode somar totais
+# parciais, também conhecidos como margens (margins):
+
 
 
 
